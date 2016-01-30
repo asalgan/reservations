@@ -3,6 +3,7 @@ class ReservationsController < ApplicationController
 
   def index
     @upcoming_reservations = @restaurant.upcoming_reservations
+    @reservation = Reservation.new
   end
 
   def new
@@ -11,21 +12,19 @@ class ReservationsController < ApplicationController
 
   def create
     @reservation = Reservation.new(reservation_params)
-    reserve_params = params[:reservation]
-    blah = Date.new(reserve_params["start_time(1i)"].to_i,reserve_params["start_time(2i)"].to_i,reserve_params["start_time(3i)"].to_i,reserve_params["start_time(4i)"].to_i)
+    @reservation.start_time = @reservation.start_time.beginning_of_hour
+    @reservation.end_time = @reservation.start_time + 1.hour
 
-    puts "================"
-    puts @reservation.start_time
-    puts "================"
-
-    # @reservation.end_time = params[:start_time] + 1.hour
-
-    if @reservation.save
-      respond_to do |format|
-        format.html
-        format.js { render 'show', content_type: 'text/javascript' }
+    respond_to do |format|
+      if @reservation.save
+        format.html { render action: 'index' }
+        format.js   { render action: 'create', status: :created, location: @reservation }
+      else
+        format.html { render action: 'index' }
+        format.js   { render action: 'create', status: :unprocessable_entity, errors: @reservation.errors.full_messages }
       end
     end
+
   end
 
   private

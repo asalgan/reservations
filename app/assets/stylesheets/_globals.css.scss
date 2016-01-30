@@ -1,0 +1,45 @@
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  z-index: 1;
+  height: 100%;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul, li {
+  padding: 0px;
+  margin: 0px;
+  display: block;
+  list-style-type: none;
+}
+
+p {
+  margin-bottom: 0px;
+}
+
+a:focus, textarea:focus, button:focus {
+  outline: none;
+}
+
+a, a:hover {
+  text-decoration: none;
+  outline: none;
+  text-decoration: none;
+}
+
+textarea {
+  resize: none;
+}
+
+p {
+  margin-bottom: 0px;
+}

@@ -12,5 +12,17 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require sweetalert2
 //= require bootstrap-sprockets
 //= require_tree .
+
+
+$(document).ready(function(){
+
+  // Prevent double-click action on buttons
+  $('button, a').dblclick(function(e){
+    e.preventDefault();
+    return false;
+  });
+
+});

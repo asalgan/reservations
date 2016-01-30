@@ -1,0 +1,13 @@
+$("#createReservationForm").on("ajax:success", function(e, data, status, xhr) {
+  swal('Great!','Your reservation has been scheduled','success');
+  $("#noReservations").remove();
+  $("#error_div").html('');
+  $("#reservationList").prepend("<%= j render partial: 'reservation', locals: { reservation: @reservation } %>")
+  $("#createReservationForm")[0].reset();
+  return false;
+}).on("ajax:error", function(e, xhr, status, error) {
+  $("#error_div").html("<%= j render partial: 'shared/error_messages', locals: { object: @reservation } %>")
+  return false;
+});
+
+

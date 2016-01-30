@@ -1,43 +1,25 @@
 <h4>BabyBin and the Goat</h4>
 <h5>You saved time using BabyBin, now enjoy that time at BabyBin and the Goat</h5>
 
-<%= bootstrap_form_for Reservation.new, html: { id: "createReservationForm", method: :post }, remote: true do |f| %>
-  <%= f.datetime_select :start_time, ampm: true, discard_minute: true, :minute_step => 60, required: true %>
-  <%= f.select :party_size, (1..6).map { |i| [i,i] }, required: true %>
+<%= bootstrap_form_for @reservation, html: { id: "createReservationForm", method: :post }, remote: true do |f| %>
+  <div id="error_div"></div>
+  <%= f.datetime_select :start_time, ampm: true, discard_minute: true, :minute_step => 60 %>
+  <%= f.select :party_size, (1..6).map { |i| [i,i] } %>
   <%= f.text_field :name, required: true %>
+  <%= f.hidden_field :restaurant_id, value: @restaurant.id %>
   <%= f.submit 'Create Reservation', id: "formSubmit" %>
 <% end %>
 
 
-<% unless @upcoming_reservations.nil? %>
-  <% @upcoming_reservations.each do |reservation| %>
-    <%= reservation %>
-  <% end %>
-<% else %>
-  <p>There are currently no upcoming reservations.</p>
-<% end %>
+<div>
+  <ul id="reservationList">
+    <% unless @upcoming_reservations.nil? %>
+      <% @upcoming_reservations.each do |reservation| %>
+        <%= render 'reservation', reservation: reservation %>
+      <% end %>
+    <% else %>
+      <li><p id="noReservations">There are currently no upcoming reservations.</p></li>
+    <% end %>
+  </ul>
+</div>
 
-
-<script>
-  $(document).ready(function() {
-    $("#formSubmit").on('click', function(e) {
-      e.preventDefault();
-
-      var reserveForm = $(this).closest('form').serialize();,
-      var url = window.location.origin + '/reservations'
-
-      $.ajax({
-        url: url,
-        data: reserveForm,
-        format: json,
-        success: function() {
-          alert('yay!');
-        }
-        error: function(jqXHR, textStatus, errorThrown){
-          alert('nooo');
-        }
-      });
-
-    });
-  });
-</script>
