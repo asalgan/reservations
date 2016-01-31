@@ -17,6 +17,10 @@ class ReservationsController < ApplicationController
 
     respond_to do |format|
       if @reservation.save
+
+        table = @restaurant.create_table(@reservation)
+        @reservation.update(table: table)
+
         format.html { render action: 'index' }
         format.js   { render action: 'create', status: :created, location: @reservation }
       else
