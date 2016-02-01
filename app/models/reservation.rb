@@ -1,4 +1,5 @@
 class Reservation < ActiveRecord::Base
+  include ReservationsHelper
   belongs_to :restaurant
   belongs_to :table
 
@@ -6,7 +7,6 @@ class Reservation < ActiveRecord::Base
   validates :name, presence: true
   validates :party_size, presence: true
   validate  :not_past
-  validate  :has_available_seating
 
   def not_past
     if start_time.past?
@@ -14,26 +14,18 @@ class Reservation < ActiveRecord::Base
     end
   end
 
-  def has_available_seating
+  def self.check_availability(reservation)
 
-    case party_size
-      when 1..2 then table_type = "two_person"
-      when 3..4 then table_type = "four_person"
-      when 5..6 then table_type = "six_person"
-    end
+    table_type = ReservationsHelper.table_type(reservation.party_size)
+    same_reserved_time = where(start_time: reservation.start_time.beginning_of_hour).joins(:table).where(:tables => { :table_type => table_type })
 
-    same_types = Reservation.where(start_time: start_time).collect(&:table).select {|x| x.table_type == table_type }
-
-    unless same_types.nil?
-      has_room = Table.at_capacity?(same_types)
-
-      if has_room == false
-        errors.add :party_size, "cannot be seated at this time, please select another timeslot."
-      end
-
+    if same_reserved_time.present?
+      has_room = Table.at_capacity?(table_type, same_reserved_time.count)
+      has_room == false ? false : true
+    else
+      true
     end
 
   end
-
 
 end

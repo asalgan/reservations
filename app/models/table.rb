@@ -8,10 +8,8 @@ class Table < ActiveRecord::Base
   # four_person: 2 tables
   # six_person:  1 table
 
-  def self.at_capacity?(types)
-    table_type = types.first
-
-    if (table_type.two_person? && types.count <= 5) || (table_type.four_person? && types.count <= 2) || (table_type.six_person? && types.count <= 1)
+  def self.at_capacity?(type, quantity)
+    if (type.to_i == 0 && quantity.to_i == 5) || (type.to_i == 1 && quantity.to_i == 2) || (type.to_i == 2 && quantity.to_i == 1)
       true
     else
       false
