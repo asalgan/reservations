@@ -1,7 +1,10 @@
 // $("#createReservationForm").on("ajax:success", function(e, data, status, xhr) {
 
-  $("#reservationList").prepend("<%= j render partial: 'reservation', locals: { reservation: @reservation } %>")
-  swal('Great!','Your reservation has been scheduled','success');
+$("#reservationList").prepend("<%= j render partial: 'reservation', locals: { reservation: @reservation } %>")
+swal('Great!','Your reservation has been scheduled','success');
+$("#noReservations").remove();
+$("#error_div").html('');
+$("#createReservationForm")[0].reset();
 // }).on("ajax:error", function(e, xhr, status, error) {
 //   $("#error_div").html("<%= j render partial: 'shared/error_messages', locals: { object: @reservation } %>")
 // });

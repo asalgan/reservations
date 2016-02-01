@@ -15,27 +15,19 @@ class ReservationsController < ApplicationController
     @reservation.start_time = @reservation.start_time.beginning_of_hour
     @reservation.end_time = @reservation.start_time + 1.hour
 
-    # is_available = Reservation.check_availability(@reservation)
+    respond_to do |format|
+      if @reservation.save!
 
-    # if is_available == true
+        table = @restaurant.create_table(@reservation)
+        @reservation.update(table: table)
 
-      respond_to do |format|
-        if @reservation.save!
-
-          table = @restaurant.create_table(@reservation)
-          @reservation.update(table: table)
-
-          format.html { render action: 'index' }
-          format.js   { render action: 'create', status: :created, location: @reservation }
-        else
-          format.html { render action: 'index' }
-          format.js   { render action: 'create', status: :unprocessable_entity, errors: @reservation.errors.full_messages }
-        end
+        format.html { render action: 'index' }
+        format.js   { render action: 'create', status: :created, location: @reservation }
+      else
+        format.html { render action: 'index' }
+        format.js   { render action: 'create', status: :unprocessable_entity, errors: @reservation.errors.full_messages }
       end
-
-    # else
-      # render nothing: true
-    # end
+    end
 
   end
 

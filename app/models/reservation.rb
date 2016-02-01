@@ -17,11 +17,11 @@ class Reservation < ActiveRecord::Base
   def self.check_availability(reservation)
 
     table_type = ReservationsHelper.table_type(reservation.party_size)
-    same_reserved_time = where(start_time: reservation.start_time.beginning_of_hour).joins(:table).where(:tables => { :table_type => table_type })
+    same_reserved_time = where(start_time: reservation.start_time.beginning_of_hour).joins(:table).where(:tables => { :table_type => table_type }).count
 
-    if same_reserved_time.present?
-      has_room = Table.at_capacity?(table_type, same_reserved_time.count)
-      has_room == false ? false : true
+    if same_reserved_time > 0
+      at_capacity = Table.at_capacity?(table_type, same_reserved_time)
+      at_capacity == true ? false : true
     else
       true
     end

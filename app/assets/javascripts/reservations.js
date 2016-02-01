@@ -14,9 +14,6 @@ $(document).ready(function(){
       success: function(data) {
         if(data === true) {
           $(form).submit();
-          $("#noReservations").remove();
-          $("#error_div").html('');
-          $("#createReservationForm")[0].reset();
         } else {
           swal('Whoops','Looks like that time is already booked, please try another time','error');
         }
