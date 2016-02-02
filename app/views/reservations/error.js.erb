@@ -1,0 +1,6 @@
+<% if @reservation.errors.count > 0 %>
+  $("#error_div").html("<%= j render partial: 'shared/error_messages', locals: { object: @reservation } %>")
+<% else %>
+  swal('Whoops','Looks like that time is already booked, please try another time','error');
+  $("#error_div").html('');
+<% end %>

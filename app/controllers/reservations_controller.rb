@@ -15,27 +15,37 @@ class ReservationsController < ApplicationController
     @reservation.start_time = @reservation.start_time.beginning_of_hour
     @reservation.end_time = @reservation.start_time + 1.hour
 
-    respond_to do |format|
-      if @reservation.save!
+    is_available = Reservation.check_availability(@reservation)
 
-        table = @restaurant.create_table(@reservation)
-        @reservation.update(table: table)
+    if is_available == true
 
-        format.html { render action: 'index' }
-        format.js   { render action: 'create', status: :created, location: @reservation }
-      else
-        format.html { render action: 'index' }
-        format.js   { render action: 'create', status: :unprocessable_entity, errors: @reservation.errors.full_messages }
+      respond_to do |format|
+        if @reservation.save
+
+          table = @restaurant.create_table(@reservation)
+          @reservation.update(table: table)
+
+          format.html { render action: 'index' }
+          format.js   { render action: 'create', status: :created, location: @reservation }
+        else
+          format.html { render action: 'index' }
+          format.js   { render 'error', status: :unprocessable_entity, errors: @reservation.errors.full_messages }
+        end
+      end
+
+    else
+      respond_to do |format|
+        format.js { render 'error' }
       end
     end
 
   end
 
-  def check_availability
-    reservation = Reservation.new(reservation_params)
-    is_available = Reservation.check_availability(reservation)
-    render json: is_available.as_json
-  end
+  # def check_availability
+  #   reservation = Reservation.new(reservation_params)
+  #   is_available = Reservation.check_availability(reservation)
+  #   render json: is_available.as_json
+  # end
 
   private
 

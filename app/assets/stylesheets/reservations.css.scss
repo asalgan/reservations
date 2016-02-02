@@ -1,0 +1,49 @@
+@import "globals";
+
+.headers {
+  text-align: center;
+  margin-bottom: 3%;
+  margin-top: 2%;
+}
+
+.main {
+
+  #reservationList {
+    margin-top: 3%;
+
+    li {
+      padding: 10px;
+      text-align: center;
+      background-color: white;
+      border: 1px solid #e7e7e7;
+      margin: 2%;
+    }
+  }
+
+  #createReservationForm {
+
+    #error_div {
+      margin: 2% 0;
+      text-align: center;
+      text-align: center;
+      color: #FF6666;
+      font-style: italic;
+    }
+
+    #formSubmit {
+      background-color: #81C483;
+      color: white;
+      border: 0px;
+      font-weight: 500;
+      @extend %transition;
+
+      &:hover {
+        background-color: darken(#81C483, 5%);
+      }
+    }
+
+    label.required:after {
+      content:" *";
+    }
+  }
+}

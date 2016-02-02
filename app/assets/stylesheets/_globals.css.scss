@@ -1,3 +1,15 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+main {
+  @extend .container;
+  padding-bottom: 80px;
+  width: 100%;
+  background: url(asset-path("crossword.png")) repeat;
+  background-size: cover;
+  min-height: 100%;
+}
+
 html {
   height: 100%;
   margin: 0;
@@ -42,4 +54,41 @@ textarea {
 
 p {
   margin-bottom: 0px;
+}
+
+img {
+  @extend .img-responsive;
+  margin: 0 auto;
+  }
+// override for the 'Home' navigation link
+.navbar-brand {
+  font-size: inherit;
+}
+
+.column {
+  @extend .col-md-6;
+  @extend .text-center;
+}
+
+.form {
+  @extend .col-md-6;
+}
+
+.form-centered {
+  @extend .col-md-6;
+  @extend .text-center;
+}
+
+.submit {
+  @extend .btn;
+  @extend .btn-primary;
+  @extend .btn-lg;
+}
+
+%transition {
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
