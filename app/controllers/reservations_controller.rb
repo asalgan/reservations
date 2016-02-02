@@ -6,10 +6,6 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.new
   end
 
-  def new
-    @reservation = Reservation.new
-  end
-
   def create
     @reservation = Reservation.new(reservation_params)
     @reservation.start_time = @reservation.start_time.beginning_of_hour
@@ -28,7 +24,7 @@ class ReservationsController < ApplicationController
           format.html { render action: 'index' }
           format.js   { render action: 'create', status: :created, location: @reservation }
         else
-          format.html { render action: 'index' }
+          format.html { render action: 'index', status: :unprocessable_entity }
           format.js   { render 'error', status: :unprocessable_entity, errors: @reservation.errors.full_messages }
         end
       end
@@ -41,11 +37,6 @@ class ReservationsController < ApplicationController
 
   end
 
-  # def check_availability
-  #   reservation = Reservation.new(reservation_params)
-  #   is_available = Reservation.check_availability(reservation)
-  #   render json: is_available.as_json
-  # end
 
   private
 
