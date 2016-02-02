@@ -37,7 +37,7 @@ RSpec.describe ReservationsController, type: :controller do
       it 'does not create the reservation due to past time' do
         post :create, reservation: attributes_for(:reservation, start_time: Time.now-1.day)
         expect(Reservation.count).to eq(0)
-         expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
 
     end
