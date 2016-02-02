@@ -18,7 +18,7 @@ class ReservationsController < ApplicationController
       respond_to do |format|
         if @reservation.save
 
-          table = @restaurant.create_table(@reservation)
+          table = Table.create_table(@restaurant, @reservation)
           @reservation.update(table: table)
 
           format.html { render action: 'index' }

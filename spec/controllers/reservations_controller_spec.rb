@@ -12,7 +12,6 @@ RSpec.describe ReservationsController, type: :controller do
 
   end
 
-
   describe 'POST #create' do
 
     context 'with valid attributes' do
@@ -24,7 +23,6 @@ RSpec.describe ReservationsController, type: :controller do
       end
 
     end
-
 
     context 'with invalid attributes' do
 
@@ -42,16 +40,17 @@ RSpec.describe ReservationsController, type: :controller do
 
     end
 
-
-    context 'with filled capacity' do
+    context 'with filled capacity', :js => true do
 
       before(:each) do
-        @current_reservation = FactoryGirl.create(:six_person_reservation)
+        @current_reservation = FactoryGirl.create(:six_person_reservation, restaurant_id: @restaurant.id)
+        @current_table = FactoryGirl.create(:table, restaurant_id: @restaurant.id, reservation_id: @current_reservation.id)
       end
 
       it 'does not create the reservation due to no capacity' do
-        post :create, reservation: attributes_for(:six_person_reservation)
+        post :create, reservation: attributes_for(:six_person_reservation, restaurant_id: @restaurant.id), format: :js
         expect(Reservation.count).to eq(1)
+        expect(Reservation.all).to eq([@current_reservation])
       end
 
     end

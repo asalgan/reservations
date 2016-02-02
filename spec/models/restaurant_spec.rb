@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Restaurant do
+RSpec.describe Restaurant, type: :model do
 
   before(:each) do
     @restaurant = FactoryGirl.create(:restaurant)
@@ -16,4 +16,3 @@ describe Restaurant do
   end
 
 end
-
